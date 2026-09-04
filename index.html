@@ -33,7 +33,7 @@
 <svg class="lily right2 small pink" viewBox="0 0 80 150"><path class="stem" d="M40 145 C39 114 43 84 41 51"/><path class="leaf" d="M40 111 C55 102 61 89 61 79 C50 84 43 96 40 108 M39 98 C26 90 20 80 19 70 C30 74 36 84 39 95"/><g transform="translate(41 49)"><ellipse class="petal-l" rx="9" ry="22" transform="rotate(0) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(72) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(144) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(216) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(288) translate(0 -12)"/><circle class="center" r="5"/></g></svg>
 <svg class="lily right3 tiny" viewBox="0 0 80 150"><path class="stem" d="M40 145 C42 114 39 87 40 55"/><path class="leaf" d="M40 112 C52 103 57 92 57 83 C48 88 42 98 40 109"/><g transform="translate(40 53)"><ellipse class="petal-l" rx="9" ry="22" transform="rotate(0) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(72) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(144) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(216) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(288) translate(0 -12)"/><circle class="center" r="5"/></g></svg>
 </div><div class="ground"></div><div class="petals" id="petals"></div>
-<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><div class="music-label">Presiona aquí ♫</div><div id="yt-player" class="music-frame" aria-label="Reproductor de Amor de Emmanuel Cortes en YouTube"></div><button class="music-btn" id="musicBtn" type="button" disabled>Preparando canción…</button><p class="hint" id="musicHint">La canción se reproduce aquí mismo, sin salir de la página.</p></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
+<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><div id="yt-player" class="music-frame" aria-label="Reproductor de Amor de Emmanuel Cortes en YouTube"></div><button class="music-btn" id="musicBtn" type="button" disabled>Preparando canción…</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
@@ -45,7 +45,7 @@ window.onYouTubeIframeAPIReady=()=>{
     events:{onReady:()=>{
       const musicBtn=document.getElementById('musicBtn');
       musicBtn.disabled=false;
-      musicBtn.textContent='Presiona aquí ♫';
+      musicBtn.textContent='Presiona aquí mailob';
       musicBtn.addEventListener('click',()=>{
         const st=ytPlayer.getPlayerState();
         if(st===YT.PlayerState.PLAYING){ytPlayer.pauseVideo();musicBtn.textContent='Continuar canción ♫';}
