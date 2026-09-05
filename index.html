@@ -769,10 +769,7 @@
   position:relative!important;
   z-index:100!important;
 }
-#musicBtn:disabled{
-  opacity:.72!important;
-  pointer-events:none!important;
-}
+
 
 </style>
 </head>
@@ -916,24 +913,10 @@
   </div>
 </div>
 
-<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><iframe
-  id="yt-player"
-  class="music-frame"
-  width="100%"
-  height="160"
-  src="https://www.youtube.com/embed/2C29r956v40?enablejsapi=1&playsinline=1&controls=1&rel=0&origin=https%3A%2F%2Falduscaldus.github.io"
-  title="Amor - Emmanuel Cortes"
-  frameborder="0"
-  allow="autoplay; encrypted-media; picture-in-picture"
-  allowfullscreen
-></iframe>
-<button
-  class="music-btn"
-  id="musicBtn"
-  type="button"
-  disabled
-  onclick="playMailobNow()"
->Presiona primero aquí mailob 💕</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
+<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><div id="yt-player" class="music-frame" aria-label="Amor - Emmanuel Cortes"></div>
+<button class="music-btn" id="musicBtn" type="button" style="display:none">
+Presiona primero aquí mailob 💕
+</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 
 
@@ -1037,43 +1020,47 @@ function startFinale(){
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
 </script>
 
+
+
 <script>
 let mailobPlayer = null;
-let mailobReady = false;
 
-function playMailobNow(){
-  if(!mailobReady || !mailobPlayer) return;
-  try{
-    mailobPlayer.unMute();
-    mailobPlayer.setVolume(100);
-    mailobPlayer.playVideo();
-    const b=document.getElementById('musicBtn');
-    if(b) b.style.display='none';
-  }catch(e){
-    console.error('No se pudo iniciar la canción:', e);
-  }
-}
+window.onYouTubeIframeAPIReady = function () {
+  mailobPlayer = new YT.Player('yt-player', {
+    height: '160',
+    width: '100%',
+    videoId: '2C29r956v40',
+    playerVars: {
+      playsinline: 1,
+      controls: 1,
+      rel: 0
+    },
+    events: {
+      onReady: function (event) {
+        const button = document.getElementById('musicBtn');
+        if (!button) return;
 
-window.onYouTubeIframeAPIReady = function(){
-  try{
-    mailobPlayer = new YT.Player('yt-player',{
-      events:{
-        onReady:function(){
-          mailobReady = true;
-          const b=document.getElementById('musicBtn');
-          if(b){
-            b.disabled = false;
-            b.style.opacity = '1';
-            b.style.pointerEvents = 'auto';
-          }
+        button.style.display = 'inline-flex';
+        button.disabled = false;
+
+        button.onclick = function () {
+          // Este clic ocurre SOLO cuando el player ya confirmó onReady.
+          event.target.unMute();
+          event.target.setVolume(100);
+          event.target.playVideo();
+        };
+      },
+      onStateChange: function (event) {
+        // Ocultarlo únicamente cuando YouTube CONFIRMA que ya está reproduciendo.
+        if (event.data === YT.PlayerState.PLAYING) {
+          const button = document.getElementById('musicBtn');
+          if (button) button.style.display = 'none';
         }
       }
-    });
-  }catch(e){
-    console.error('No se pudo inicializar YouTube:', e);
-  }
+    }
+  });
 };
 </script>
-
 <script src="https://www.youtube.com/iframe_api"></script>
+
 </body></html>
