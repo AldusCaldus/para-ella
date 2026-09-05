@@ -850,6 +850,30 @@
   animation-duration:.9s!important;
 }
 
+
+/* Corrección final del primer botón:
+   el mismo elemento cambia de botón a texto. */
+#musicBtn.music-btn-as-text{
+  display:block!important;
+  width:100%!important;
+  margin:18px auto 0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+  color:#fff7fb!important;
+  font-size:17px!important;
+  font-weight:700!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  cursor:default!important;
+}
+
+/* Separación clara: el siguiente botón queda bastante más abajo. */
+.start-btn{
+  margin-top:72px!important;
+}
+
 </style>
 </head>
 <body>
@@ -987,7 +1011,6 @@
 <button class="music-btn" id="musicBtn" type="button" style="display:none">
 Presiona primero aquí mailob 💕
 </button>
-<p id="nextHint" class="next-hint" aria-live="polite">Ahora el de abajo 👇💕</p>
 </div>
 <button class="btn start-btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
@@ -1129,9 +1152,9 @@ window.onYouTubeIframeAPIReady = function () {
           event.target.playVideo();
 
           // Cambia la interfaz INMEDIATAMENTE al primer toque.
-          button.style.display = 'none';
-          const hint = document.getElementById('nextHint');
-          if (hint) hint.classList.add('show');
+          button.textContent = 'Ahora el de abajo 👇💕';
+          button.disabled = true;
+          button.classList.add('music-btn-as-text');
         };
       },
       onStateChange: function (event) {
