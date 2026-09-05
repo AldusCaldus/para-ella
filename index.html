@@ -335,6 +335,104 @@
   box-shadow:0 0 42px rgba(255,255,255,.82),0 0 90px rgba(255,216,236,.42);
 }
 
+
+/* FINAL DE PERSPECTIVA REFORZADO: TODO VA HACIA EL CENTRO */
+.scene.fly-giraffes .moon{
+  position:absolute!important;
+  left:50%!important;
+  top:48%!important;
+  transform-origin:center center!important;
+  animation:moonCenterApproach 6.4s cubic-bezier(.18,.62,.22,1) forwards!important;
+  z-index:30!important;
+}
+@keyframes moonCenterApproach{
+  0%{
+    left:82%;top:12%;
+    transform:translate(-50%,-50%) scale(1);
+    filter:brightness(1)
+  }
+  35%{
+    left:70%;top:22%;
+    transform:translate(-50%,-50%) scale(1.35);
+    filter:brightness(1.08)
+  }
+  70%{
+    left:58%;top:36%;
+    transform:translate(-50%,-50%) scale(1.75);
+    filter:brightness(1.15)
+  }
+  100%{
+    left:50%;top:47%;
+    transform:translate(-50%,-50%) scale(2.15);
+    filter:brightness(1.2)
+  }
+}
+
+/* Las dos jirafas viajan hacia el centro y CRECEN */
+.scene.fly-giraffes .giraffe-one{
+  animation:flyCenterOne 6.4s cubic-bezier(.18,.62,.22,1) forwards!important
+}
+.scene.fly-giraffes .giraffe-two{
+  animation:flyCenterTwo 6.4s cubic-bezier(.18,.62,.22,1) forwards!important
+}
+@keyframes flyCenterOne{
+  0%{left:38%;top:58%;transform:translate(-50%,-50%) scale(.62) rotate(-6deg)}
+  28%{left:40%;top:50%;transform:translate(-50%,-50%) scale(.78) rotate(-4deg)}
+  58%{left:44%;top:43%;transform:translate(-50%,-50%) scale(.98) rotate(-2deg)}
+  82%{left:47%;top:40%;transform:translate(-50%,-50%) scale(1.15) rotate(-1deg)}
+  100%{left:47.5%;top:42%;transform:translate(-50%,-50%) scale(1.24) rotate(0deg);opacity:1}
+}
+@keyframes flyCenterTwo{
+  0%{left:64%;top:58%;transform:translate(-50%,-50%) scale(.62) rotate(6deg)}
+  28%{left:61%;top:51%;transform:translate(-50%,-50%) scale(.79) rotate(4deg)}
+  58%{left:57%;top:44%;transform:translate(-50%,-50%) scale(1) rotate(2deg)}
+  82%{left:53%;top:41%;transform:translate(-50%,-50%) scale(1.16) rotate(1deg)}
+  100%{left:52.5%;top:42%;transform:translate(-50%,-50%) scale(1.24) rotate(0deg);opacity:1}
+}
+
+/* Brillitos de vuelo MUCHO MÁS visibles */
+.flight-spark{
+  position:absolute;
+  z-index:41;
+  pointer-events:none;
+  color:#fff8ff;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.95),
+    0 0 13px rgba(255,210,244,.9),
+    0 0 22px rgba(205,184,255,.75);
+  animation:flightSpark 1.35s ease-out forwards;
+  opacity:0;
+}
+@keyframes flightSpark{
+  0%{opacity:0;transform:translate(0,0) scale(.35) rotate(0deg)}
+  18%{opacity:1;transform:translate(-4px,4px) scale(1.05) rotate(22deg)}
+  65%{opacity:.9}
+  100%{opacity:0;transform:translate(-30px,36px) scale(.45) rotate(150deg)}
+}
+
+/* Al terminar, quedan juntos en el centro frente a la luna */
+.scene.soft-ending .moon{
+  left:50%!important;top:47%!important;
+  transform:translate(-50%,-50%) scale(2.15)!important;
+  filter:brightness(1.2)!important;
+}
+.scene.soft-ending .giraffe-one{
+  left:47.5%!important;top:42%!important;
+  animation:finalCenterFloatOne 4.2s ease-in-out infinite alternate!important
+}
+.scene.soft-ending .giraffe-two{
+  left:52.5%!important;top:42%!important;
+  animation:finalCenterFloatTwo 4.5s ease-in-out infinite alternate!important
+}
+@keyframes finalCenterFloatOne{
+  from{transform:translate(-50%,-50%) scale(1.24) rotate(-1deg)}
+  to{transform:translate(-50%,-53%) scale(1.28) rotate(1deg)}
+}
+@keyframes finalCenterFloatTwo{
+  from{transform:translate(-50%,-50%) scale(1.24) rotate(1deg)}
+  to{transform:translate(-50%,-53%) scale(1.28) rotate(-1deg)}
+}
+
 </style>
 </head>
 <body>
@@ -562,18 +660,26 @@ function startFinale(){
     const trail=document.getElementById('magicTrail');
     let sparks=0;
     const sparkTimer=setInterval(()=>{
-      const s=document.createElement('span');
-      s.className='magic-spark';
-      s.textContent=Math.random()>.45?'✨':'✦';
-      s.style.left=(34+Math.random()*48)+'%';
-      s.style.top=(28+Math.random()*38)+'%';
-      s.style.animationDelay=(Math.random()*.18)+'s';
-      trail.appendChild(s);
-      setTimeout(()=>s.remove(),2100);
-      if(++sparks>48)clearInterval(sparkTimer);
-    },95);
+      const g1=document.querySelector('.giraffe-one');
+      const g2=document.querySelector('.giraffe-two');
+      [g1,g2].forEach((g,idx)=>{
+        if(!g)return;
+        const r=g.getBoundingClientRect();
+        for(let j=0;j<2;j++){
+          const s=document.createElement('span');
+          s.className='flight-spark';
+          s.textContent=Math.random()>.5?'✨':'✦';
+          s.style.left=(r.left+r.width*(.30+Math.random()*.45))+'px';
+          s.style.top=(r.top+r.height*(.55+Math.random()*.30))+'px';
+          s.style.fontSize=(14+Math.random()*12)+'px';
+          trail.appendChild(s);
+          setTimeout(()=>s.remove(),1500);
+        }
+      });
+      if(++sparks>58)clearInterval(sparkTimer);
+    },90);
   },17900);
-  setTimeout(()=>scene.classList.add('soft-ending'),24600);
+  setTimeout(()=>scene.classList.add('soft-ending'),25000);
 }
 
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
