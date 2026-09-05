@@ -721,27 +721,63 @@
   </div>
 </div>
 
-<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><div id="yt-player" class="music-frame" aria-label="Reproductor de Amor de Emmanuel Cortes en YouTube"></div><button class="music-btn" id="musicBtn" type="button" disabled>Preparando canción…</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
+<section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><iframe
+  id="yt-player"
+  class="music-frame"
+  width="100%"
+  height="160"
+  src="https://www.youtube.com/embed/2C29r956v40?enablejsapi=1&playsinline=1&controls=1&rel=0"
+  title="Amor - Emmanuel Cortes"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe><button class="music-btn" id="musicBtn" type="button">Presiona primero aquí mailob 💕</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 let ytPlayer=null;
-window.onYouTubeIframeAPIReady=()=>{
-  ytPlayer=new YT.Player('yt-player',{
-    width:'100%',height:'160',videoId:'2C29r956v40',
-    playerVars:{playsinline:1,controls:1,rel:0,modestbranding:1},
-    events:{onReady:()=>{
-      const musicBtn=document.getElementById('musicBtn');
-      musicBtn.disabled=false;
-      musicBtn.textContent='Presiona primero aquí mailob 💕';
-      musicBtn.addEventListener('click',()=>{
-        ytPlayer.playVideo();
-        musicBtn.textContent='Uno más 👇💕';
-        musicBtn.disabled=true;
+let musicStarted=false;
 
-      });
-    }}
-  });
+function playMailobSong(){
+  if(musicStarted)return;
+  const musicBtn=document.getElementById('musicBtn');
+  const iframe=document.getElementById('yt-player');
+
+  // 1) Si la API de YouTube está lista, usarla.
+  if(ytPlayer && typeof ytPlayer.playVideo==='function'){
+    try{ ytPlayer.playVideo(); }catch(e){}
+  } else if(iframe && iframe.contentWindow){
+    // 2) Fallback: comando directo al iframe. Funciona aunque iframe_api tarde o falle.
+    try{
+      iframe.contentWindow.postMessage(
+        JSON.stringify({event:'command',func:'playVideo',args:[]}),
+        '*'
+      );
+    }catch(e){}
+  }
+
+  musicStarted=true;
+  musicBtn.textContent='Uno más 👇💕';
+  musicBtn.disabled=true;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const musicBtn=document.getElementById('musicBtn');
+  if(musicBtn)musicBtn.addEventListener('click',playMailobSong);
+});
+
+window.onYouTubeIframeAPIReady=()=>{
+  try{
+    ytPlayer=new YT.Player('yt-player',{
+      events:{
+        onReady:()=>{},
+        onError:()=>{}
+      }
+    });
+  }catch(e){
+    // El iframe visible sigue funcionando aunque falle la API.
+    ytPlayer=null;
+  }
 };
 (()=>{const scene=document.getElementById('scene'),btn=document.getElementById('btn'),start=document.getElementById('start'),petals=document.getElementById('petals'),pile=document.getElementById('petalPile'),stars=document.getElementById('stars'),confettiLayer=document.getElementById('confettiLayer'),finalRain=document.getElementById('finalRain'),finalCover=document.getElementById('finalCover');let started=false,normalTimer=null,stormTimer=null,settled=0;const flowerHTML='<span class="fp"></span><span class="fp"></span><span class="fp"></span><span class="fp"></span><span class="fp"></span>';for(let i=0;i<42;i++){const s=document.createElement('span');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*58+'%';s.style.animationDelay=Math.random()*3+'s';stars.appendChild(s)}function addToPile(x){if(settled>360)return;settled++;const f=document.createElement('span');f.className='pile-flower';f.innerHTML=flowerHTML;const layer=Math.min(58,Math.floor(settled/5.4));const jitter=(Math.random()*5-2.5);f.style.left=Math.max(0,Math.min(96,x+jitter))+'%';f.style.bottom=(Math.max(0,layer*0.96+Math.random()*2.4))+'%';f.style.setProperty('--r',(Math.random()*360)+'deg');f.style.setProperty('--s',(0.65+Math.random()*.55).toFixed(2));pile.appendChild(f);requestAnimationFrame(()=>f.classList.add('settled'))}function flower(storm=false){const f=document.createElement('span');f.className='blossom falling';f.innerHTML=flowerHTML;const x=Math.random()*100;const dur=storm?2.2+Math.random()*1.5:4.2+Math.random()*3.2;f.style.left=x+'%';f.style.animationDuration=dur+'s';f.style.setProperty('--drift',(Math.random()*44-22)+'px');f.style.setProperty('--sc',(.55+Math.random()*.85).toFixed(2));f.style.setProperty('--land',(storm?76+Math.random()*15:92+Math.random()*8)+'dvh');petals.appendChild(f);setTimeout(()=>{if(storm)addToPile(x);f.remove()},dur*1000)}function makeConfetti(){confettiLayer.innerHTML='';const colors=['#ff8fbb','#ffd1e3','#f8b4d9','#ffffff','#ffcf6e','#c9b6ff'];for(let i=0;i<34;i++){const c=document.createElement('span');const isHeart=i%7===0;c.className='confetti'+(isHeart?' heart':'');if(isHeart)c.textContent='♥';c.style.setProperty('--c',colors[i%colors.length]);c.style.color=colors[i%colors.length];const angle=(-150+Math.random()*120)*Math.PI/180;const dist=80+Math.random()*120;c.style.setProperty('--x',Math.cos(angle)*dist+'px');c.style.setProperty('--y',Math.sin(angle)*dist+'px');c.style.setProperty('--rot',(Math.random()*520-260)+'deg');c.style.setProperty('--dur',(1.1+Math.random()*.8).toFixed(2)+'s');c.style.setProperty('--delay',(Math.random()*.12).toFixed(2)+'s');confettiLayer.appendChild(c)}setTimeout(()=>confettiLayer.innerHTML='',2200)}
 function cherryMarkup(){return '<span></span><span></span><span></span><span></span><span></span>'}
