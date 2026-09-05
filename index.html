@@ -597,6 +597,9 @@
   pointer-events:auto!important;
 }
 
+
+#yt-player[src="about:blank"]{min-height:72px!important;height:72px!important}
+#musicFallback{display:none}
 </style>
 </head>
 <body>
@@ -744,13 +747,14 @@
   class="music-frame"
   width="100%"
   height="160"
-  src="https://www.youtube-nocookie.com/embed/2C29r956v40?playsinline=1&controls=1&rel=0"
+  src="about:blank"
   title="Amor - Emmanuel Cortes"
   frameborder="0"
   allow="autoplay; encrypted-media; picture-in-picture"
   allowfullscreen
 ></iframe>
-<button class="music-btn" id="musicBtn" type="button">Presiona primero aquí mailob 💕</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
+<button class="music-btn" id="musicBtn" type="button">Presiona primero aquí mailob 💕</button>
+<a id="musicFallback" href="https://www.youtube.com/watch?v=2C29r956v40" target="_blank" rel="noopener" class="music-btn" style="display:none;margin-top:10px;text-decoration:none">Si no carga la canción, toca aquí 💕</a></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 
 
@@ -761,6 +765,7 @@
   function initMusic(){
     const btn=document.getElementById('musicBtn');
     const frame=document.getElementById('yt-player');
+    const fallback=document.getElementById('musicFallback');
     if(!btn || !frame) return;
 
     btn.disabled=false;
@@ -768,13 +773,17 @@
 
     btn.addEventListener('click', function(){
       if(btn.dataset.started==='1') return;
-
       btn.dataset.started='1';
+
       frame.src='https://www.youtube-nocookie.com/embed/'+SONG_ID+
         '?autoplay=1&playsinline=1&controls=1&rel=0&t='+(Date.now());
 
       btn.textContent='Uno más 👇💕';
       btn.disabled=true;
+
+      setTimeout(()=>{
+        if(fallback) fallback.style.display='inline-block';
+      },3500);
     }, {once:true});
   }
 
