@@ -760,6 +760,20 @@
   z-index:100!important;
 }
 
+
+#musicBtn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  visibility:visible!important;
+  position:relative!important;
+  z-index:100!important;
+}
+#musicBtn:disabled{
+  opacity:.72!important;
+  pointer-events:none!important;
+}
+
 </style>
 </head>
 <body>
@@ -907,7 +921,7 @@
   class="music-frame"
   width="100%"
   height="160"
-  src="https://www.youtube-nocookie.com/embed/2C29r956v40?enablejsapi=1&playsinline=1&controls=1&rel=0"
+  src="https://www.youtube.com/embed/2C29r956v40?enablejsapi=1&playsinline=1&controls=1&rel=0&origin=https%3A%2F%2Falduscaldus.github.io"
   title="Amor - Emmanuel Cortes"
   frameborder="0"
   allow="autoplay; encrypted-media; picture-in-picture"
@@ -917,17 +931,8 @@
   class="music-btn"
   id="musicBtn"
   type="button"
-  onclick="
-    var f=document.getElementById('yt-player');
-    if(f && f.contentWindow){
-      f.contentWindow.postMessage(JSON.stringify({
-        event:'command',
-        func:'playVideo',
-        args:[]
-      }),'*');
-    }
-    this.style.display='none';
-  "
+  disabled
+  onclick="playMailobNow()"
 >Presiona primero aquí mailob 💕</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 
@@ -1031,4 +1036,44 @@ function startFinale(){
 
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
 </script>
+
+<script>
+let mailobPlayer = null;
+let mailobReady = false;
+
+function playMailobNow(){
+  if(!mailobReady || !mailobPlayer) return;
+  try{
+    mailobPlayer.unMute();
+    mailobPlayer.setVolume(100);
+    mailobPlayer.playVideo();
+    const b=document.getElementById('musicBtn');
+    if(b) b.style.display='none';
+  }catch(e){
+    console.error('No se pudo iniciar la canción:', e);
+  }
+}
+
+window.onYouTubeIframeAPIReady = function(){
+  try{
+    mailobPlayer = new YT.Player('yt-player',{
+      events:{
+        onReady:function(){
+          mailobReady = true;
+          const b=document.getElementById('musicBtn');
+          if(b){
+            b.disabled = false;
+            b.style.opacity = '1';
+            b.style.pointerEvents = 'auto';
+          }
+        }
+      }
+    });
+  }catch(e){
+    console.error('No se pudo inicializar YouTube:', e);
+  }
+};
+</script>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 </body></html>
