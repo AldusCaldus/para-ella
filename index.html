@@ -833,27 +833,6 @@ function startFinale(){
       });
       if(++bursts>30)clearInterval(fwTimer);
     },210);
-    const trail=document.getElementById('magicTrail');
-    let sparks=0;
-    const sparkTimer=setInterval(()=>{
-      const g1=document.querySelector('.giraffe-one');
-      const g2=document.querySelector('.giraffe-two');
-      [g1,g2].forEach((g,idx)=>{
-        if(!g)return;
-        const r=g.getBoundingClientRect();
-        for(let j=0;j<2;j++){
-          const s=document.createElement('span');
-          s.className='flight-spark';
-          s.textContent=Math.random()>.5?'✨':'✦';
-          s.style.left=(r.left+r.width*(.30+Math.random()*.45))+'px';
-          s.style.top=(r.top+r.height*(.55+Math.random()*.30))+'px';
-          s.style.fontSize=(14+Math.random()*12)+'px';
-          trail.appendChild(s);
-          setTimeout(()=>s.remove(),1500);
-        }
-      });
-      if(++sparks>58)clearInterval(sparkTimer);
-    },90);
   },17900);
   setTimeout(()=>scene.classList.add('soft-ending'),25800);
 }
