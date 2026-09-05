@@ -76,6 +76,116 @@
 .final-quote-card .ref{margin:12px 0 0;font-size:clamp(14px,3.5vw,17px);font-weight:700}
 .final-quote-card .personal{margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.28);font-size:clamp(15px,4vw,19px);font-weight:700}
 
+
+/* ORIGAMI FINAL */
+.final-quote-card{
+  transform-origin:center;
+  transition:transform .7s cubic-bezier(.22,.8,.28,1),opacity .55s ease,filter .55s ease;
+  backface-visibility:hidden;
+}
+.scene.origami-fold-1 .final-quote-card{transform:perspective(900px) rotateX(14deg) rotateY(-10deg) scale(.92)}
+.scene.origami-fold-2 .final-quote-card{transform:perspective(900px) rotateX(42deg) rotateY(28deg) rotateZ(-6deg) scale(.68);filter:brightness(.92)}
+.scene.origami-fold-3 .final-quote-card{transform:perspective(900px) rotateX(72deg) rotateY(-48deg) rotateZ(13deg) scale(.32);opacity:0}
+
+.origami-giraffe{
+  position:absolute;left:50%;top:50%;width:min(64vw,280px);aspect-ratio:3/5;
+  transform:translate(-50%,-46%) scale(.18) rotate(-8deg);opacity:0;z-index:38;pointer-events:none;
+  filter:drop-shadow(0 18px 22px rgba(28,14,41,.28));
+  transition:opacity .45s ease,transform 1.15s cubic-bezier(.18,.78,.2,1)
+}
+.scene.show-origami-giraffe .origami-giraffe{opacity:1;transform:translate(-50%,-46%) scale(1)}
+.origami-giraffe svg{width:100%;height:100%;overflow:visible}
+.origami-giraffe .facet{
+  transform-box:fill-box;transform-origin:center;opacity:0;
+  transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rz,0deg)) scale(.2);
+  animation:origamiFacetIn .8s cubic-bezier(.18,.75,.22,1) forwards;animation-delay:var(--d,0s)
+}
+@keyframes origamiFacetIn{
+  0%{opacity:0;transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rz,0deg)) scale(.2)}
+  70%{opacity:1;transform:translate(0,0) scale(1.04)}
+  100%{opacity:1;transform:translate(0,0) scale(1)}
+}
+.origami-giraffe .crease{fill:none;stroke:rgba(111,65,55,.78);stroke-width:1.7;stroke-dasharray:5 4;opacity:0}
+.scene.show-origami-giraffe .origami-giraffe .crease{animation:creaseDraw .7s ease forwards;animation-delay:1.15s}
+@keyframes creaseDraw{to{opacity:.95}}
+.origami-giraffe .outline{fill:none;stroke:rgba(97,55,47,.95);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.paper-a{fill:#f7c97f}.paper-b{fill:#e9ad60}.paper-c{fill:#ffd995}.paper-d{fill:#d99a52}.paper-e{fill:#f2ba68}
+.origami-giraffe .spot{fill:#a56d42;opacity:.84}.origami-giraffe .eye{fill:#4c3142}.origami-giraffe .ear{fill:#efb86e}.origami-giraffe .horn{fill:#d09452}
+
+
+/* DOS JIRAFAS VOLADORAS CON NOSOTROS MONTADOS */
+.origami-giraffe{width:min(48vw,205px);top:55%;transition:opacity .45s ease,transform 1.15s cubic-bezier(.18,.78,.2,1)}
+.origami-giraffe.giraffe-one{left:39%;transform:translate(-50%,-46%) scale(.16) rotate(-9deg)}
+.origami-giraffe.giraffe-two{left:63%;transform:translate(-50%,-46%) scale(.16) rotate(9deg)}
+.scene.show-origami-giraffe .origami-giraffe.giraffe-one{opacity:1;transform:translate(-50%,-46%) scale(.88) rotate(-5deg)}
+.scene.show-origami-giraffe .origami-giraffe.giraffe-two{opacity:1;transform:translate(-50%,-46%) scale(.88) rotate(5deg)}
+
+.origami-rider{position:absolute;left:50%;top:33%;width:36%;transform:translate(-50%,-100%) rotate(-2deg);z-index:5;filter:drop-shadow(0 3px 4px rgba(35,18,48,.18))}
+.origami-rider svg{width:100%;height:auto;overflow:visible}
+.origami-rider .rhead{fill:#fff7f2;stroke-width:2}
+.origami-rider .rline,.origami-rider .rhair,.origami-rider .rglass{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3}
+.origami-rider.rider-blue .rhead,.origami-rider.rider-blue .rline,.origami-rider.rider-blue .rhair,.origami-rider.rider-blue .rglass{stroke:#69bff5}
+.origami-rider.rider-pink .rhead,.origami-rider.rider-pink .rline,.origami-rider.rider-pink .rhair{stroke:#ff8fc7}
+.origami-rider .rflower{fill:#ffb1d1;stroke:#fff4fb;stroke-width:1.4}
+
+/* alitas mágicas tipo cuento/unicornio */
+.origami-giraffe::before,.origami-giraffe::after{
+  content:"";position:absolute;top:47%;width:50%;height:22%;
+  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(225,208,255,.60));
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:80% 15% 80% 20%;
+  z-index:-1;filter:drop-shadow(0 0 8px rgba(255,236,255,.5));
+  transform-origin:100% 50%;
+  animation:wingFlap .72s ease-in-out infinite alternate
+}
+.origami-giraffe::before{right:70%;transform:rotate(-14deg)}
+.origami-giraffe::after{left:70%;transform:scaleX(-1) rotate(-14deg)}
+@keyframes wingFlap{from{rotate:-8deg}to{rotate:16deg}}
+
+/* estrellas detrás mientras vuelan */
+.magic-trail{
+  position:absolute;inset:0;z-index:34;pointer-events:none;opacity:0;
+}
+.scene.fly-giraffes .magic-trail{opacity:1}
+.magic-spark{position:absolute;font-size:18px;animation:sparkFloat 1.8s ease-out forwards;opacity:0}
+@keyframes sparkFloat{
+  0%{opacity:0;transform:scale(.3) translateY(8px)}
+  20%{opacity:1}
+  100%{opacity:0;transform:scale(1.15) translate(-26px,30px) rotate(120deg)}
+}
+
+/* vuelo hacia la luna */
+.scene.fly-giraffes .giraffe-one{
+  animation:flyMoonOne 5.8s cubic-bezier(.28,.55,.22,1) forwards !important
+}
+.scene.fly-giraffes .giraffe-two{
+  animation:flyMoonTwo 5.8s cubic-bezier(.28,.55,.22,1) forwards !important
+}
+@keyframes flyMoonOne{
+  0%{left:39%;top:55%;transform:translate(-50%,-46%) scale(.88) rotate(-5deg)}
+  24%{left:31%;top:43%;transform:translate(-50%,-46%) scale(.80) rotate(-10deg)}
+  48%{left:50%;top:31%;transform:translate(-50%,-46%) scale(.66) rotate(8deg)}
+  72%{left:70%;top:20%;transform:translate(-50%,-46%) scale(.48) rotate(-7deg)}
+  100%{left:84%;top:12%;transform:translate(-50%,-46%) scale(.24) rotate(5deg);opacity:.95}
+}
+@keyframes flyMoonTwo{
+  0%{left:63%;top:55%;transform:translate(-50%,-46%) scale(.88) rotate(5deg)}
+  22%{left:68%;top:45%;transform:translate(-50%,-46%) scale(.82) rotate(11deg)}
+  46%{left:58%;top:34%;transform:translate(-50%,-46%) scale(.68) rotate(-8deg)}
+  70%{left:74%;top:22%;transform:translate(-50%,-46%) scale(.50) rotate(7deg)}
+  100%{left:87%;top:13%;transform:translate(-50%,-46%) scale(.23) rotate(-4deg);opacity:.95}
+}
+.scene.fly-giraffes .final-quote{opacity:0!important;visibility:hidden!important}
+.scene.fly-giraffes .final-cover{opacity:.52;transition:opacity 2s ease}
+.scene.fly-giraffes .moon{animation:moonGlow 1.3s ease-in-out infinite alternate}
+@keyframes moonGlow{to{box-shadow:0 0 38px #fff,0 0 90px #ffd8ecaa;transform:scale(1.08)}}
+
+@media(max-width:430px){
+  .origami-giraffe{width:45vw}
+  .origami-giraffe.giraffe-one{left:36%}
+  .origami-giraffe.giraffe-two{left:66%}
+}
+
 </style>
 </head>
 <body>
@@ -102,8 +212,97 @@
 <svg class="lily right3 tiny" viewBox="0 0 80 150"><path class="stem" d="M40 145 C42 114 39 87 40 55"/><path class="leaf" d="M40 112 C52 103 57 92 57 83 C48 88 42 98 40 109"/><g transform="translate(40 53)"><ellipse class="petal-l" rx="9" ry="22" transform="rotate(0) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(72) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(144) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(216) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(288) translate(0 -12)"/><circle class="center" r="5"/></g></svg>
 </div><div class="ground"></div><div class="petal-pile" id="petalPile" aria-hidden="true"></div><div class="petals" id="petals"></div><div class="speech-bubble" id="speechBubble">Tú que ves esto, te quiero mucho, preciosa ❤️</div><div id="confettiLayer" aria-hidden="true"></div><span class="final-petal boylast"></span><span class="final-petal girllast"></span>
 
+<div class="magic-trail" id="magicTrail" aria-hidden="true"></div>
 <div class="final-rain" id="finalRain" aria-hidden="true"></div>
 <div class="final-cover" id="finalCover" aria-hidden="true"></div>
+
+<div class="origami-giraffe giraffe-one" aria-hidden="true">
+  <svg viewBox="0 0 180 300">
+    <polygon class="facet paper-d" style="--tx:-55px;--ty:80px;--d:.05s" points="70,210 88,210 83,288 72,288"/>
+    <polygon class="facet paper-b" style="--tx:55px;--ty:80px;--d:.12s" points="96,208 113,211 122,286 111,288"/>
+    <polygon class="facet paper-a" style="--tx:-70px;--ty:10px;--d:.16s" points="55,150 105,142 119,212 70,216"/>
+    <polygon class="facet paper-c" style="--tx:65px;--ty:5px;--d:.22s" points="105,142 135,166 119,212"/>
+    <polygon class="facet paper-e" style="--tx:-45px;--ty:-35px;--d:.28s" points="55,150 78,126 105,142"/>
+    <polygon class="facet paper-b" style="--tx:-60px;--ty:-70px;--d:.34s" points="78,126 90,63 108,68 105,142"/>
+    <polygon class="facet paper-c" style="--tx:55px;--ty:-65px;--d:.40s" points="108,68 120,84 105,142"/>
+    <polygon class="facet paper-a" style="--tx:-50px;--ty:-95px;--d:.46s" points="76,50 94,28 121,34 126,59 108,74 88,68"/>
+    <polygon class="facet paper-c" style="--tx:50px;--ty:-95px;--d:.52s" points="121,34 147,45 126,59"/>
+    <polygon class="facet paper-e" style="--tx:45px;--ty:-80px;--d:.58s" points="126,59 149,63 121,77 108,74"/>
+    <polygon class="facet paper-c" style="--tx:65px;--ty:-45px;--d:.62s" points="121,77 151,76 142,93 116,91"/>
+    <polygon class="facet ear" style="--tx:-75px;--ty:-110px;--d:.66s" points="80,36 58,28 73,48"/>
+    <polygon class="facet ear" style="--tx:75px;--ty:-110px;--d:.70s" points="121,35 143,28 128,49"/>
+    <polygon class="facet horn" style="--tx:-40px;--ty:-125px;--d:.74s" points="89,30 88,9 95,9 99,30"/>
+    <polygon class="facet horn" style="--tx:40px;--ty:-125px;--d:.78s" points="111,31 114,10 121,11 119,34"/>
+    <polygon class="facet spot" style="--d:.84s" points="76,164 90,158 96,171 84,180"/>
+    <polygon class="facet spot" style="--d:.88s" points="96,187 110,180 116,194 104,201"/>
+    <polygon class="facet spot" style="--d:.92s" points="91,95 102,91 108,103 96,109"/>
+    <polygon class="facet spot" style="--d:.96s" points="92,49 103,43 111,52 101,60"/>
+    <circle class="eye" cx="116" cy="48" r="2.7"/>
+    <polyline class="outline" points="72,288 70,216 55,150 78,126 90,63 76,50 73,48 58,28 80,36 89,30 88,9 95,9 99,30 111,31 114,10 121,11 119,34 121,35 143,28 128,49 147,45 126,59 149,63 121,77 151,76 142,93 116,91 108,74 105,142 135,166 119,212 122,286"/>
+    <line class="crease" x1="78" y1="126" x2="105" y2="142"/>
+    <line class="crease" x1="105" y1="142" x2="119" y2="212"/>
+    <line class="crease" x1="70" y1="216" x2="105" y2="142"/>
+    <line class="crease" x1="90" y1="63" x2="108" y2="74"/>
+    <line class="crease" x1="88" y1="68" x2="126" y2="59"/>
+    <line class="crease" x1="121" y1="34" x2="108" y2="74"/>
+    <line class="crease" x1="126" y1="59" x2="121" y2="77"/>
+    <line class="crease" x1="55" y1="150" x2="119" y2="212"/>
+  </svg>
+
+  <div class="origami-rider rider-blue" aria-hidden="true">
+    <svg viewBox="0 0 70 92">
+      <circle cx="35" cy="19" r="12" class="rhead"/>
+      <path d="M27 18 Q35 10 43 18" class="rhair"/>
+      <rect x="27" y="16" width="8" height="6" rx="2" class="rglass"/>
+      <rect x="36" y="16" width="8" height="6" rx="2" class="rglass"/>
+      <path d="M35 19 H36" class="rline"/>
+      <path d="M35 31 L35 58 M35 40 L20 51 M35 40 L51 50 M35 58 L24 78 M35 58 L49 76" class="rline"/>
+    </svg>
+  </div>
+</div>
+<div class="origami-giraffe giraffe-two" aria-hidden="true">
+  <svg viewBox="0 0 180 300">
+    <polygon class="facet paper-d" style="--tx:-55px;--ty:80px;--d:.05s" points="70,210 88,210 83,288 72,288"/>
+    <polygon class="facet paper-b" style="--tx:55px;--ty:80px;--d:.12s" points="96,208 113,211 122,286 111,288"/>
+    <polygon class="facet paper-a" style="--tx:-70px;--ty:10px;--d:.16s" points="55,150 105,142 119,212 70,216"/>
+    <polygon class="facet paper-c" style="--tx:65px;--ty:5px;--d:.22s" points="105,142 135,166 119,212"/>
+    <polygon class="facet paper-e" style="--tx:-45px;--ty:-35px;--d:.28s" points="55,150 78,126 105,142"/>
+    <polygon class="facet paper-b" style="--tx:-60px;--ty:-70px;--d:.34s" points="78,126 90,63 108,68 105,142"/>
+    <polygon class="facet paper-c" style="--tx:55px;--ty:-65px;--d:.40s" points="108,68 120,84 105,142"/>
+    <polygon class="facet paper-a" style="--tx:-50px;--ty:-95px;--d:.46s" points="76,50 94,28 121,34 126,59 108,74 88,68"/>
+    <polygon class="facet paper-c" style="--tx:50px;--ty:-95px;--d:.52s" points="121,34 147,45 126,59"/>
+    <polygon class="facet paper-e" style="--tx:45px;--ty:-80px;--d:.58s" points="126,59 149,63 121,77 108,74"/>
+    <polygon class="facet paper-c" style="--tx:65px;--ty:-45px;--d:.62s" points="121,77 151,76 142,93 116,91"/>
+    <polygon class="facet ear" style="--tx:-75px;--ty:-110px;--d:.66s" points="80,36 58,28 73,48"/>
+    <polygon class="facet ear" style="--tx:75px;--ty:-110px;--d:.70s" points="121,35 143,28 128,49"/>
+    <polygon class="facet horn" style="--tx:-40px;--ty:-125px;--d:.74s" points="89,30 88,9 95,9 99,30"/>
+    <polygon class="facet horn" style="--tx:40px;--ty:-125px;--d:.78s" points="111,31 114,10 121,11 119,34"/>
+    <polygon class="facet spot" style="--d:.84s" points="76,164 90,158 96,171 84,180"/>
+    <polygon class="facet spot" style="--d:.88s" points="96,187 110,180 116,194 104,201"/>
+    <polygon class="facet spot" style="--d:.92s" points="91,95 102,91 108,103 96,109"/>
+    <polygon class="facet spot" style="--d:.96s" points="92,49 103,43 111,52 101,60"/>
+    <circle class="eye" cx="116" cy="48" r="2.7"/>
+    <polyline class="outline" points="72,288 70,216 55,150 78,126 90,63 76,50 73,48 58,28 80,36 89,30 88,9 95,9 99,30 111,31 114,10 121,11 119,34 121,35 143,28 128,49 147,45 126,59 149,63 121,77 151,76 142,93 116,91 108,74 105,142 135,166 119,212 122,286"/>
+    <line class="crease" x1="78" y1="126" x2="105" y2="142"/>
+    <line class="crease" x1="105" y1="142" x2="119" y2="212"/>
+    <line class="crease" x1="70" y1="216" x2="105" y2="142"/>
+    <line class="crease" x1="90" y1="63" x2="108" y2="74"/>
+    <line class="crease" x1="88" y1="68" x2="126" y2="59"/>
+    <line class="crease" x1="121" y1="34" x2="108" y2="74"/>
+    <line class="crease" x1="126" y1="59" x2="121" y2="77"/>
+    <line class="crease" x1="55" y1="150" x2="119" y2="212"/>
+  </svg>
+
+  <div class="origami-rider rider-pink" aria-hidden="true">
+    <svg viewBox="0 0 70 92">
+      <circle cx="35" cy="19" r="12" class="rhead"/>
+      <path d="M26 18 Q35 8 44 18 M25 21 Q22 33 28 37 M45 21 Q48 33 42 37" class="rhair"/>
+      <circle cx="45" cy="10" r="4" class="rflower"/>
+      <path d="M35 31 L35 58 M35 40 L20 51 M35 40 L51 50 M35 58 L24 78 M35 58 L49 76" class="rline"/>
+    </svg>
+  </div>
+</div>
+
 <div class="final-quote" aria-live="polite">
   <div class="final-quote-card">
     <p class="verse">Como el lirio entre los espinos,<br>así es mi amada entre las doncellas.”</p>
@@ -124,7 +323,7 @@ window.onYouTubeIframeAPIReady=()=>{
     events:{onReady:()=>{
       const musicBtn=document.getElementById('musicBtn');
       musicBtn.disabled=false;
-      musicBtn.textContent='Presiona aquí mailob';
+      musicBtn.textContent='Toca aquí primero, mailob 💕';
       musicBtn.addEventListener('click',()=>{
         ytPlayer.playVideo();
         musicBtn.textContent='Uno más 👇💕';
@@ -187,6 +386,26 @@ function startFinale(){
   // La pantalla ya queda cubierta; entonces aparece la cita.
   setTimeout(()=>scene.classList.add('final-fill'),3500);
   setTimeout(()=>scene.classList.add('show-final-quote'),7600);
+  setTimeout(()=>scene.classList.add('origami-fold-1'),12200);
+  setTimeout(()=>scene.classList.add('origami-fold-2'),12900);
+  setTimeout(()=>scene.classList.add('origami-fold-3'),13600);
+  setTimeout(()=>scene.classList.add('show-origami-giraffe'),14150);
+  setTimeout(()=>{
+    scene.classList.add('fly-giraffes');
+    const trail=document.getElementById('magicTrail');
+    let sparks=0;
+    const sparkTimer=setInterval(()=>{
+      const s=document.createElement('span');
+      s.className='magic-spark';
+      s.textContent=Math.random()>.45?'✨':'✦';
+      s.style.left=(34+Math.random()*48)+'%';
+      s.style.top=(28+Math.random()*38)+'%';
+      s.style.animationDelay=(Math.random()*.18)+'s';
+      trail.appendChild(s);
+      setTimeout(()=>s.remove(),2100);
+      if(++sparks>48)clearInterval(sparkTimer);
+    },95);
+  },17100);
 }
 
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
