@@ -600,6 +600,167 @@
 
 #yt-player[src="about:blank"]{min-height:72px!important;height:72px!important}
 #musicFallback{display:none}
+
+/* =========================================================
+   PERSPECTIVA V2 — un solo punto de fuga para luna + jirafas
+   ========================================================= */
+
+/* Nunca alas. */
+.origami-giraffe::before,
+.origami-giraffe::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Durante el vuelo, los tres elementos convergen al MISMO punto visual.
+   La luna viene desde arriba-derecha; las jirafas desde abajo y ambos lados. */
+.scene.fly-giraffes.perspective-v2 .moon{
+  position:absolute!important;
+  z-index:30!important;
+  transform-origin:center center!important;
+  animation:vanishingMoonV2 7s cubic-bezier(.18,.66,.20,1) forwards!important;
+}
+.scene.fly-giraffes.perspective-v2 .giraffe-one{
+  z-index:40!important;
+  animation:vanishingGiraffeLeftV2 7s cubic-bezier(.18,.66,.20,1) forwards!important;
+}
+.scene.fly-giraffes.perspective-v2 .giraffe-two{
+  z-index:40!important;
+  animation:vanishingGiraffeRightV2 7s cubic-bezier(.18,.66,.20,1) forwards!important;
+}
+
+@keyframes vanishingMoonV2{
+  0%{
+    left:82%; top:12%;
+    transform:translate(-50%,-50%) scale(1);
+    filter:brightness(1);
+  }
+  28%{
+    left:72%; top:20%;
+    transform:translate(-50%,-50%) scale(1.28);
+    filter:brightness(1.05);
+  }
+  60%{
+    left:61%; top:30%;
+    transform:translate(-50%,-50%) scale(1.72);
+    filter:brightness(1.12);
+  }
+  82%{
+    left:54%; top:39%;
+    transform:translate(-50%,-50%) scale(2.10);
+    filter:brightness(1.17);
+  }
+  100%{
+    left:50%; top:45%;
+    transform:translate(-50%,-50%) scale(2.48);
+    filter:brightness(1.22);
+  }
+}
+
+@keyframes vanishingGiraffeLeftV2{
+  0%{
+    left:31%; top:66%;
+    transform:translate(-50%,-50%) scale(.66) rotate(-7deg);
+    opacity:1;
+  }
+  28%{
+    left:35%; top:59%;
+    transform:translate(-50%,-50%) scale(.82) rotate(-4deg);
+  }
+  60%{
+    left:40.5%; top:52%;
+    transform:translate(-50%,-50%) scale(1.04) rotate(-2deg);
+  }
+  82%{
+    left:44.5%; top:47%;
+    transform:translate(-50%,-50%) scale(1.28) rotate(-1deg);
+  }
+  100%{
+    left:47%; top:44.5%;
+    transform:translate(-50%,-50%) scale(1.48) rotate(0deg);
+  }
+}
+
+@keyframes vanishingGiraffeRightV2{
+  0%{
+    left:69%; top:66%;
+    transform:translate(-50%,-50%) scale(.66) rotate(7deg);
+    opacity:1;
+  }
+  28%{
+    left:65%; top:59%;
+    transform:translate(-50%,-50%) scale(.82) rotate(4deg);
+  }
+  60%{
+    left:59.5%; top:52%;
+    transform:translate(-50%,-50%) scale(1.04) rotate(2deg);
+  }
+  82%{
+    left:55.5%; top:47%;
+    transform:translate(-50%,-50%) scale(1.28) rotate(1deg);
+  }
+  100%{
+    left:53%; top:44.5%;
+    transform:translate(-50%,-50%) scale(1.48) rotate(0deg);
+  }
+}
+
+/* Terminan juntos, grandes y flotando frente a la luna; no quedan congelados. */
+.scene.soft-ending.perspective-v2 .moon{
+  left:50%!important;
+  top:45%!important;
+  transform:translate(-50%,-50%) scale(2.48)!important;
+  filter:brightness(1.22)!important;
+  box-shadow:0 0 45px rgba(255,255,255,.88),0 0 105px rgba(255,216,236,.48)!important;
+  animation:moonBreathV2 4.8s ease-in-out infinite alternate!important;
+}
+.scene.soft-ending.perspective-v2 .giraffe-one{
+  left:47%!important;
+  top:44.5%!important;
+  animation:giraffeFloatLeftV2 4.2s ease-in-out infinite alternate!important;
+}
+.scene.soft-ending.perspective-v2 .giraffe-two{
+  left:53%!important;
+  top:44.5%!important;
+  animation:giraffeFloatRightV2 4.5s ease-in-out infinite alternate!important;
+}
+
+@keyframes moonBreathV2{
+  from{transform:translate(-50%,-50%) scale(2.45)}
+  to{transform:translate(-50%,-51%) scale(2.54)}
+}
+@keyframes giraffeFloatLeftV2{
+  from{transform:translate(-50%,-50%) scale(1.48) rotate(-1deg)}
+  to{transform:translate(-50%,-54%) scale(1.54) rotate(1deg)}
+}
+@keyframes giraffeFloatRightV2{
+  from{transform:translate(-50%,-50%) scale(1.48) rotate(1deg)}
+  to{transform:translate(-50%,-54%) scale(1.54) rotate(-1deg)}
+}
+
+/* Fuegos artificiales visibles alrededor de la trayectoria */
+.scene.fly-giraffes.perspective-v2 .magic-trail{
+  opacity:1!important;
+  z-index:43!important;
+}
+.firework-burst{
+  position:fixed!important;
+  z-index:44!important;
+  pointer-events:none!important;
+}
+
+/* El botón de música queda SIEMPRE utilizable al abrir. */
+#musicBtn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  position:relative!important;
+  z-index:100!important;
+}
+
 </style>
 </head>
 <body>
@@ -753,47 +914,26 @@
   allow="autoplay; encrypted-media; picture-in-picture"
   allowfullscreen
 ></iframe>
-<button class="music-btn" id="musicBtn" type="button">Presiona primero aquí mailob 💕</button>
+<button
+  class="music-btn"
+  id="musicBtn"
+  type="button"
+  onclick="
+    var f=document.getElementById('yt-player');
+    if(f){
+      f.src='https://www.youtube-nocookie.com/embed/2C29r956v40?autoplay=1&playsinline=1&controls=1&rel=0&t='+(Date.now());
+    }
+    this.textContent='Uno más 👇💕';
+    this.disabled=true;
+    var fb=document.getElementById('musicFallback');
+    setTimeout(function(){ if(fb) fb.style.display='inline-block'; },5000);
+  "
+>Presiona primero aquí mailob 💕</button>
 <a id="musicFallback" href="https://www.youtube.com/watch?v=2C29r956v40" target="_blank" rel="noopener" class="music-btn" style="display:none;margin-top:10px;text-decoration:none">Si no carga la canción, toca aquí 💕</a></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 
 
-<script>
-(function(){
-  const SONG_ID='2C29r956v40';
 
-  function initMusic(){
-    const btn=document.getElementById('musicBtn');
-    const frame=document.getElementById('yt-player');
-    const fallback=document.getElementById('musicFallback');
-    if(!btn || !frame) return;
-
-    btn.disabled=false;
-    btn.textContent='Presiona primero aquí mailob 💕';
-
-    btn.addEventListener('click', function(){
-      if(btn.dataset.started==='1') return;
-      btn.dataset.started='1';
-
-      frame.src='https://www.youtube-nocookie.com/embed/'+SONG_ID+
-        '?autoplay=1&playsinline=1&controls=1&rel=0&t='+(Date.now());
-
-      btn.textContent='Uno más 👇💕';
-      btn.disabled=true;
-
-      setTimeout(()=>{
-        if(fallback) fallback.style.display='inline-block';
-      },3500);
-    }, {once:true});
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',initMusic,{once:true});
-  }else{
-    initMusic();
-  }
-})();
-</script>
 
 <script>
 (()=>{const scene=document.getElementById('scene'),btn=document.getElementById('btn'),start=document.getElementById('start'),petals=document.getElementById('petals'),pile=document.getElementById('petalPile'),stars=document.getElementById('stars'),confettiLayer=document.getElementById('confettiLayer'),finalRain=document.getElementById('finalRain'),finalCover=document.getElementById('finalCover');let started=false,normalTimer=null,stormTimer=null,settled=0;const flowerHTML='<span class="fp"></span><span class="fp"></span><span class="fp"></span><span class="fp"></span><span class="fp"></span>';for(let i=0;i<42;i++){const s=document.createElement('span');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*58+'%';s.style.animationDelay=Math.random()*3+'s';stars.appendChild(s)}function addToPile(x){if(settled>360)return;settled++;const f=document.createElement('span');f.className='pile-flower';f.innerHTML=flowerHTML;const layer=Math.min(58,Math.floor(settled/5.4));const jitter=(Math.random()*5-2.5);f.style.left=Math.max(0,Math.min(96,x+jitter))+'%';f.style.bottom=(Math.max(0,layer*0.96+Math.random()*2.4))+'%';f.style.setProperty('--r',(Math.random()*360)+'deg');f.style.setProperty('--s',(0.65+Math.random()*.55).toFixed(2));pile.appendChild(f);requestAnimationFrame(()=>f.classList.add('settled'))}function flower(storm=false){const f=document.createElement('span');f.className='blossom falling';f.innerHTML=flowerHTML;const x=Math.random()*100;const dur=storm?2.2+Math.random()*1.5:4.2+Math.random()*3.2;f.style.left=x+'%';f.style.animationDuration=dur+'s';f.style.setProperty('--drift',(Math.random()*44-22)+'px');f.style.setProperty('--sc',(.55+Math.random()*.85).toFixed(2));f.style.setProperty('--land',(storm?76+Math.random()*15:92+Math.random()*8)+'dvh');petals.appendChild(f);setTimeout(()=>{if(storm)addToPile(x);f.remove()},dur*1000)}function makeConfetti(){confettiLayer.innerHTML='';const colors=['#ff8fbb','#ffd1e3','#f8b4d9','#ffffff','#ffcf6e','#c9b6ff'];for(let i=0;i<34;i++){const c=document.createElement('span');const isHeart=i%7===0;c.className='confetti'+(isHeart?' heart':'');if(isHeart)c.textContent='♥';c.style.setProperty('--c',colors[i%colors.length]);c.style.color=colors[i%colors.length];const angle=(-150+Math.random()*120)*Math.PI/180;const dist=80+Math.random()*120;c.style.setProperty('--x',Math.cos(angle)*dist+'px');c.style.setProperty('--y',Math.sin(angle)*dist+'px');c.style.setProperty('--rot',(Math.random()*520-260)+'deg');c.style.setProperty('--dur',(1.1+Math.random()*.8).toFixed(2)+'s');c.style.setProperty('--delay',(Math.random()*.12).toFixed(2)+'s');confettiLayer.appendChild(c)}setTimeout(()=>confettiLayer.innerHTML='',2200)}
@@ -855,7 +995,7 @@ function startFinale(){
   setTimeout(()=>scene.classList.add('origami-fold-3'),14100);
   setTimeout(()=>scene.classList.add('show-origami-giraffe'),14850);
   setTimeout(()=>{
-    scene.classList.add('fly-giraffes');
+    scene.classList.add('fly-giraffes','perspective-v2');
     const trail=document.getElementById('magicTrail');
     let bursts=0;
     const makeFirework=(x,y)=>{
@@ -884,8 +1024,8 @@ function startFinale(){
         const r=g.getBoundingClientRect();
         makeFirework(r.left+r.width*.5,r.top+r.height*.68);
       });
-      if(++bursts>30)clearInterval(fwTimer);
-    },210);
+      if(++bursts>24)clearInterval(fwTimer);
+    },250);
   },17900);
   setTimeout(()=>scene.classList.add('soft-ending'),25800);
 }
