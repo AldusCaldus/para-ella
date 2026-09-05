@@ -1123,19 +1123,21 @@ window.onYouTubeIframeAPIReady = function () {
         button.disabled = false;
 
         button.onclick = function () {
-          // Este clic ocurre SOLO cuando el player ya confirmó onReady.
+          // Reproduce la canción.
           event.target.unMute();
           event.target.setVolume(100);
           event.target.playVideo();
+
+          // Cambia la interfaz INMEDIATAMENTE al primer toque.
+          button.style.display = 'none';
+          const hint = document.getElementById('nextHint');
+          if (hint) hint.classList.add('show');
         };
       },
       onStateChange: function (event) {
         // Ocultarlo únicamente cuando YouTube CONFIRMA que ya está reproduciendo.
         if (event.data === YT.PlayerState.PLAYING) {
-          const button = document.getElementById('musicBtn');
-          const hint = document.getElementById('nextHint');
-          if (button) button.style.display = 'none';
-          if (hint) hint.classList.add('show');
+          // La interfaz ya cambió al tocar el botón.
         }
       }
     }
