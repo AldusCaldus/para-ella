@@ -97,8 +97,11 @@
 .origami-giraffe svg{width:100%;height:100%;overflow:visible}
 .origami-giraffe .facet{
   transform-box:fill-box;transform-origin:center;opacity:0;
-  transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rz,0deg)) scale(.2);
-  animation:origamiFacetIn .8s cubic-bezier(.18,.75,.22,1) forwards;animation-delay:var(--d,0s)
+  transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rz,0deg)) scale(.2)
+}
+.scene.show-origami-giraffe .origami-giraffe .facet{
+  animation:origamiFacetIn .8s cubic-bezier(.18,.75,.22,1) forwards;
+  animation-delay:var(--d,0s)
 }
 @keyframes origamiFacetIn{
   0%{opacity:0;transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rz,0deg)) scale(.2)}
@@ -184,6 +187,70 @@
   .origami-giraffe{width:45vw}
   .origami-giraffe.giraffe-one{left:36%}
   .origami-giraffe.giraffe-two{left:66%}
+}
+
+
+/* DOBLECES VISIBLES DE LA CITA */
+.final-quote-card{position:relative;overflow:hidden}
+.final-quote-card::before,
+.final-quote-card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity .28s ease,transform .7s cubic-bezier(.2,.75,.25,1);
+}
+.final-quote-card::before{
+  background:
+    linear-gradient(45deg,transparent 49.25%,rgba(255,244,249,.82) 49.5%,rgba(255,244,249,.82) 50.5%,transparent 50.75%),
+    linear-gradient(-45deg,transparent 49.25%,rgba(92,48,78,.58) 49.5%,rgba(92,48,78,.58) 50.5%,transparent 50.75%);
+}
+.final-quote-card::after{
+  inset:8px;
+  border-left:1px dashed rgba(255,255,255,.7);
+  border-right:1px dashed rgba(91,49,80,.55);
+  clip-path:polygon(0 0,50% 50%,100% 0,100% 100%,50% 50%,0 100%);
+}
+.scene.origami-fold-1 .final-quote-card::before,
+.scene.origami-fold-1 .final-quote-card::after,
+.scene.origami-fold-2 .final-quote-card::before,
+.scene.origami-fold-2 .final-quote-card::after{
+  opacity:1;
+}
+
+/* Las "solapas" del papel se levantan para que sí se vea el doblez */
+.fold-flap{
+  position:absolute;z-index:36;left:50%;top:50%;
+  width:min(88vw,560px);height:190px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;opacity:0;perspective:900px
+}
+.fold-flap .flap{
+  position:absolute;width:50%;height:50%;
+  background:linear-gradient(145deg,rgba(105,58,112,.96),rgba(187,93,142,.95));
+  border:1px solid rgba(255,244,249,.48);
+  box-shadow:inset 0 0 18px rgba(255,255,255,.08);
+  transform-style:preserve-3d;
+}
+.fold-flap .tl{left:0;top:0;transform-origin:100% 100%;clip-path:polygon(0 0,100% 0,100% 100%)}
+.fold-flap .tr{right:0;top:0;transform-origin:0 100%;clip-path:polygon(0 0,100% 0,0 100%)}
+.fold-flap .bl{left:0;bottom:0;transform-origin:100% 0;clip-path:polygon(0 0,100% 0,0 100%)}
+.fold-flap .br{right:0;bottom:0;transform-origin:0 0;clip-path:polygon(100% 0,100% 100%,0 0)}
+.fold-flap .crease{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(45deg,transparent 49.4%,rgba(255,255,255,.72) 49.7%,rgba(255,255,255,.72) 50.3%,transparent 50.6%),
+    linear-gradient(-45deg,transparent 49.4%,rgba(75,39,68,.58) 49.7%,rgba(75,39,68,.58) 50.3%,transparent 50.6%);
+}
+.scene.origami-fold-1 .fold-flap{opacity:1}
+.scene.origami-fold-1 .fold-flap .tl{animation:foldTL .72s ease forwards}
+.scene.origami-fold-1 .fold-flap .tr{animation:foldTR .72s .08s ease forwards}
+.scene.origami-fold-2 .fold-flap .bl{animation:foldBL .7s ease forwards}
+.scene.origami-fold-2 .fold-flap .br{animation:foldBR .7s .08s ease forwards}
+.scene.origami-fold-3 .fold-flap{animation:foldCollapse .75s ease forwards}
+@keyframes foldTL{to{transform:rotateY(68deg) rotateX(-16deg)}}
+@keyframes foldTR{to{transform:rotateY(-68deg) rotateX(-16deg)}}
+@keyframes foldBL{to{transform:rotateY(58deg) rotateX(56deg)}}
+@keyframes foldBR{to{transform:rotateY(-58deg) rotateX(56deg)}}
+@keyframes foldCollapse{
+  to{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(16deg)}
 }
 
 </style>
@@ -303,6 +370,15 @@
   </div>
 </div>
 
+
+<div class="fold-flap" aria-hidden="true">
+  <span class="flap tl"></span>
+  <span class="flap tr"></span>
+  <span class="flap bl"></span>
+  <span class="flap br"></span>
+  <span class="crease"></span>
+</div>
+
 <div class="final-quote" aria-live="polite">
   <div class="final-quote-card">
     <p class="verse">Como el lirio entre los espinos,<br>así es mi amada entre las doncellas.”</p>
@@ -387,9 +463,9 @@ function startFinale(){
   setTimeout(()=>scene.classList.add('final-fill'),3500);
   setTimeout(()=>scene.classList.add('show-final-quote'),7600);
   setTimeout(()=>scene.classList.add('origami-fold-1'),12200);
-  setTimeout(()=>scene.classList.add('origami-fold-2'),12900);
-  setTimeout(()=>scene.classList.add('origami-fold-3'),13600);
-  setTimeout(()=>scene.classList.add('show-origami-giraffe'),14150);
+  setTimeout(()=>scene.classList.add('origami-fold-2'),13100);
+  setTimeout(()=>scene.classList.add('origami-fold-3'),14100);
+  setTimeout(()=>scene.classList.add('show-origami-giraffe'),14850);
   setTimeout(()=>{
     scene.classList.add('fly-giraffes');
     const trail=document.getElementById('magicTrail');
@@ -405,7 +481,7 @@ function startFinale(){
       setTimeout(()=>s.remove(),2100);
       if(++sparks>48)clearInterval(sparkTimer);
     },95);
-  },17100);
+  },17900);
 }
 
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
