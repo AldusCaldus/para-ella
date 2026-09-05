@@ -771,6 +771,85 @@
 }
 
 
+
+/* ===== Ajustes solicitados ===== */
+
+/* Después de reproducir, esto es TEXTO, no botón. */
+.next-hint{
+  display:none;
+  margin:20px 0 0!important;
+  color:#fff7fb!important;
+  font-size:16px!important;
+  font-weight:700;
+  letter-spacing:.1px;
+  opacity:0;
+  transform:translateY(-4px);
+}
+.next-hint.show{
+  display:block;
+  animation:nextHintIn .45s ease forwards;
+}
+@keyframes nextHintIn{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Más separación para que sea obvio que ahora toca el botón inferior. */
+.start-btn{
+  margin-top:38px!important;
+}
+
+/* Jinetes claramente asentados sobre el lomo. */
+.origami-rider{
+  top:53%!important;
+  width:39%!important;
+  transform:translate(-50%,-72%) rotate(-2deg)!important;
+  z-index:8!important;
+}
+.giraffe-two .origami-rider{
+  transform:translate(-50%,-72%) rotate(2deg)!important;
+}
+.origami-rider .rline{
+  stroke-width:3.4!important;
+}
+.origami-rider .rider-saddle{
+  opacity:.9;
+  stroke-width:3!important;
+}
+
+/* Fuegos artificiales mucho más notorios. */
+.firework-burst{
+  width:12px!important;
+  height:12px!important;
+  z-index:60!important;
+  filter:drop-shadow(0 0 8px currentColor);
+}
+.firework-particle{
+  width:8px!important;
+  height:8px!important;
+  box-shadow:
+    0 0 8px currentColor,
+    0 0 18px currentColor,
+    0 0 30px currentColor!important;
+  animation-duration:1.45s!important;
+}
+.firework-particle.star{
+  font-size:23px!important;
+  text-shadow:
+    0 0 8px #fff,
+    0 0 18px currentColor,
+    0 0 30px currentColor!important;
+}
+.firework-core{
+  font-size:30px!important;
+  left:-7px!important;
+  top:-9px!important;
+  text-shadow:
+    0 0 10px #fff,
+    0 0 25px currentColor,
+    0 0 45px currentColor!important;
+  animation-duration:.9s!important;
+}
+
 </style>
 </head>
 <body>
@@ -796,15 +875,6 @@
 <svg class="lily right2 small pink" viewBox="0 0 80 150"><path class="stem" d="M40 145 C39 114 43 84 41 51"/><path class="leaf" d="M40 111 C55 102 61 89 61 79 C50 84 43 96 40 108 M39 98 C26 90 20 80 19 70 C30 74 36 84 39 95"/><g transform="translate(41 49)"><ellipse class="petal-l" rx="9" ry="22" transform="rotate(0) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(72) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(144) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(216) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(288) translate(0 -12)"/><circle class="center" r="5"/></g></svg>
 <svg class="lily right3 tiny" viewBox="0 0 80 150"><path class="stem" d="M40 145 C42 114 39 87 40 55"/><path class="leaf" d="M40 112 C52 103 57 92 57 83 C48 88 42 98 40 109"/><g transform="translate(40 53)"><ellipse class="petal-l" rx="9" ry="22" transform="rotate(0) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(72) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(144) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(216) translate(0 -12)"/><ellipse class="petal-l" rx="9" ry="22" transform="rotate(288) translate(0 -12)"/><circle class="center" r="5"/></g></svg>
 </div><div class="ground"></div><div class="petal-pile" id="petalPile" aria-hidden="true"></div><div class="petals" id="petals"></div><div class="speech-bubble" id="speechBubble">Tú que ves esto, te quiero mucho, preciosa ❤️</div><div id="confettiLayer" aria-hidden="true"></div><span class="final-petal boylast"></span><span class="final-petal girllast"></span>
-
-
-<div class="moon-ending" aria-hidden="true">
-  <div class="moon-ending-card">
-    <p class="end-main">Y si es contigo, hasta la luna. 🌙❤️</p>
-    <p class="end-small">Fin… por ahora ✨</p>
-  </div>
-</div>
-
 <div class="magic-trail" id="magicTrail" aria-hidden="true"></div>
 <div class="final-rain" id="finalRain" aria-hidden="true"></div>
 <div class="final-cover" id="finalCover" aria-hidden="true"></div>
@@ -849,7 +919,7 @@
       <rect x="27" y="16" width="8" height="6" rx="2" class="rglass"/>
       <rect x="36" y="16" width="8" height="6" rx="2" class="rglass"/>
       <path d="M35 19 H36" class="rline"/>
-      <path d="M35 31 L35 58 M35 40 L20 51 M35 40 L51 50 M35 58 L24 78 M35 58 L49 76" class="rline"/>
+      <path d="M35 31 L35 56 M35 40 L22 50 M35 40 L50 49 M35 56 L22 66 L15 82 M35 56 L49 66 L56 81" class="rline"/><path d="M19 64 Q35 70 52 63" class="rline rider-saddle"/>
     </svg>
   </div>
 </div>
@@ -891,7 +961,7 @@
       <circle cx="35" cy="19" r="12" class="rhead"/>
       <path d="M26 18 Q35 8 44 18 M25 21 Q22 33 28 37 M45 21 Q48 33 42 37" class="rhair"/>
       <circle cx="45" cy="10" r="4" class="rflower"/>
-      <path d="M35 31 L35 58 M35 40 L20 51 M35 40 L51 50 M35 58 L24 78 M35 58 L49 76" class="rline"/>
+      <path d="M35 31 L35 56 M35 40 L22 50 M35 40 L50 49 M35 56 L22 66 L15 82 M35 56 L49 66 L56 81" class="rline"/><path d="M19 64 Q35 70 52 63" class="rline rider-saddle"/>
     </svg>
   </div>
 </div>
@@ -916,7 +986,10 @@
 <section class="start" id="start"><div class="card"><div class="heart">♡</div><h2>Para ti</h2><p>Preparé algo bonito para recordarte lo bonito que es estar contigo.</p><div class="music-wrap"><div id="yt-player" class="music-frame" aria-label="Amor - Emmanuel Cortes"></div>
 <button class="music-btn" id="musicBtn" type="button" style="display:none">
 Presiona primero aquí mailob 💕
-</button></div><button class="btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
+</button>
+<p id="nextHint" class="next-hint" aria-live="polite">Ahora el de abajo 👇💕</p>
+</div>
+<button class="btn start-btn" id="btn" type="button">Toca para comenzar 🌸</button></div></section>
 </main>
 
 
@@ -993,12 +1066,12 @@ function startFinale(){
       burst.style.color=palette[Math.floor(Math.random()*palette.length)];
       const core=document.createElement('span');
       core.className='firework-core'; core.textContent='✦'; burst.appendChild(core);
-      const count=14;
+      const count=24;
       for(let i=0;i<count;i++){
         const p=document.createElement('span');
         p.className='firework-particle'+(i%4===0?' star':'');
         if(i%4===0)p.textContent='✦';
-        const a=Math.PI*2*i/count, d=30+Math.random()*30;
+        const a=Math.PI*2*i/count, d=58+Math.random()*58;
         p.style.setProperty('--dx',(Math.cos(a)*d)+'px');
         p.style.setProperty('--dy',(Math.sin(a)*d)+'px');
         burst.appendChild(p);
@@ -1007,12 +1080,18 @@ function startFinale(){
       setTimeout(()=>burst.remove(),1450);
     };
     const fwTimer=setInterval(()=>{
-      document.querySelectorAll('.giraffe-one,.giraffe-two').forEach(g=>{
+      const riders=[...document.querySelectorAll('.giraffe-one,.giraffe-two')];
+      riders.forEach(g=>{
         const r=g.getBoundingClientRect();
-        makeFirework(r.left+r.width*.5,r.top+r.height*.68);
+        makeFirework(r.left+r.width*.5,r.top+r.height*.58);
       });
-      if(++bursts>24)clearInterval(fwTimer);
-    },250);
+      if(riders.length===2 && bursts%2===0){
+        const a=riders[0].getBoundingClientRect(), b=riders[1].getBoundingClientRect();
+        makeFirework((a.left+a.width*.5+b.left+b.width*.5)/2,
+                     (a.top+a.height*.45+b.top+b.height*.45)/2);
+      }
+      if(++bursts>20)clearInterval(fwTimer);
+    },330);
   },17900);
   setTimeout(()=>scene.classList.add('soft-ending'),25800);
 }
@@ -1054,7 +1133,9 @@ window.onYouTubeIframeAPIReady = function () {
         // Ocultarlo únicamente cuando YouTube CONFIRMA que ya está reproduciendo.
         if (event.data === YT.PlayerState.PLAYING) {
           const button = document.getElementById('musicBtn');
+          const hint = document.getElementById('nextHint');
           if (button) button.style.display = 'none';
+          if (hint) hint.classList.add('show');
         }
       }
     }
