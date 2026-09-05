@@ -433,6 +433,152 @@
   to{transform:translate(-50%,-53%) scale(1.28) rotate(-1deg)}
 }
 
+
+/* ===== CORRECCIÓN FINAL: ACERCAMIENTO REAL AL CENTRO + FUEGOS ARTIFICIALES ===== */
+
+/* Durante el vuelo: luna y jirafas convergen claramente al centro */
+.scene.fly-giraffes .moon{
+  left:50%!important;
+  top:50%!important;
+  animation:moonZoomToCenter 6.8s cubic-bezier(.16,.72,.18,1) forwards!important;
+  transform-origin:center center!important;
+  z-index:28!important;
+}
+@keyframes moonZoomToCenter{
+  0%{
+    left:82%!important; top:12%!important;
+    transform:translate(-50%,-50%) scale(1)!important;
+  }
+  30%{
+    left:70%!important; top:24%!important;
+    transform:translate(-50%,-50%) scale(1.45)!important;
+  }
+  62%{
+    left:58%!important; top:38%!important;
+    transform:translate(-50%,-50%) scale(2.05)!important;
+  }
+  100%{
+    left:50%!important; top:50%!important;
+    transform:translate(-50%,-50%) scale(2.75)!important;
+  }
+}
+
+.scene.fly-giraffes .giraffe-one{
+  animation:giraffeCenterOne 6.8s cubic-bezier(.16,.72,.18,1) forwards!important;
+  z-index:40!important;
+}
+.scene.fly-giraffes .giraffe-two{
+  animation:giraffeCenterTwo 6.8s cubic-bezier(.16,.72,.18,1) forwards!important;
+  z-index:40!important;
+}
+
+@keyframes giraffeCenterOne{
+  0%{
+    left:34%!important; top:62%!important;
+    transform:translate(-50%,-50%) scale(.58) rotate(-7deg)!important;
+  }
+  35%{
+    left:39%!important; top:53%!important;
+    transform:translate(-50%,-50%) scale(.82) rotate(-4deg)!important;
+  }
+  70%{
+    left:44%!important; top:47%!important;
+    transform:translate(-50%,-50%) scale(1.16) rotate(-2deg)!important;
+  }
+  100%{
+    left:47%!important; top:48%!important;
+    transform:translate(-50%,-50%) scale(1.48) rotate(0deg)!important;
+    opacity:1!important;
+  }
+}
+
+@keyframes giraffeCenterTwo{
+  0%{
+    left:66%!important; top:62%!important;
+    transform:translate(-50%,-50%) scale(.58) rotate(7deg)!important;
+  }
+  35%{
+    left:61%!important; top:53%!important;
+    transform:translate(-50%,-50%) scale(.82) rotate(4deg)!important;
+  }
+  70%{
+    left:56%!important; top:47%!important;
+    transform:translate(-50%,-50%) scale(1.16) rotate(2deg)!important;
+  }
+  100%{
+    left:53%!important; top:48%!important;
+    transform:translate(-50%,-50%) scale(1.48) rotate(0deg)!important;
+    opacity:1!important;
+  }
+}
+
+/* Al final: permanecen grandes, juntas y flotando en el centro */
+.scene.soft-ending .moon{
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) scale(2.75)!important;
+}
+.scene.soft-ending .giraffe-one{
+  left:47%!important; top:48%!important;
+  animation:finalFloatBigOne 4.4s ease-in-out infinite alternate!important;
+}
+.scene.soft-ending .giraffe-two{
+  left:53%!important; top:48%!important;
+  animation:finalFloatBigTwo 4.7s ease-in-out infinite alternate!important;
+}
+@keyframes finalFloatBigOne{
+  from{transform:translate(-50%,-50%) scale(1.48) rotate(-1deg)!important}
+  to{transform:translate(-50%,-53%) scale(1.54) rotate(1deg)!important}
+}
+@keyframes finalFloatBigTwo{
+  from{transform:translate(-50%,-50%) scale(1.48) rotate(1deg)!important}
+  to{transform:translate(-50%,-53%) scale(1.54) rotate(-1deg)!important}
+}
+
+/* Fuegos artificiales mágicos alrededor de las jirafas */
+.firework-burst{
+  position:absolute;
+  width:8px;height:8px;
+  z-index:46;
+  pointer-events:none;
+}
+.firework-particle{
+  position:absolute;
+  left:0;top:0;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 7px currentColor,0 0 14px currentColor;
+  opacity:0;
+  animation:fireworkParticle 1.15s ease-out forwards;
+}
+.firework-particle.star{
+  width:auto;height:auto;background:none;box-shadow:none;
+  font-size:16px;line-height:1;color:inherit;
+}
+@keyframes fireworkParticle{
+  0%{
+    opacity:1;
+    transform:translate(0,0) scale(.45);
+  }
+  65%{opacity:1}
+  100%{
+    opacity:0;
+    transform:translate(var(--dx),var(--dy)) scale(.9);
+  }
+}
+.firework-core{
+  position:absolute;left:-3px;top:-3px;
+  font-size:18px;
+  animation:fireworkCore .7s ease-out forwards;
+  text-shadow:0 0 8px #fff,0 0 18px currentColor;
+}
+@keyframes fireworkCore{
+  0%{opacity:0;transform:scale(.2)}
+  30%{opacity:1;transform:scale(1.35)}
+  100%{opacity:0;transform:scale(.6)}
+}
+
 </style>
 </head>
 <body>
@@ -658,6 +804,36 @@ function startFinale(){
   setTimeout(()=>{
     scene.classList.add('fly-giraffes');
     const trail=document.getElementById('magicTrail');
+    let bursts=0;
+    const makeFirework=(x,y)=>{
+      const burst=document.createElement('span');
+      burst.className='firework-burst';
+      burst.style.left=x+'px'; burst.style.top=y+'px';
+      const palette=['#fff7ff','#ffd3ec','#ffe58f','#d9c7ff','#ffffff'];
+      burst.style.color=palette[Math.floor(Math.random()*palette.length)];
+      const core=document.createElement('span');
+      core.className='firework-core'; core.textContent='✦'; burst.appendChild(core);
+      const count=14;
+      for(let i=0;i<count;i++){
+        const p=document.createElement('span');
+        p.className='firework-particle'+(i%4===0?' star':'');
+        if(i%4===0)p.textContent='✦';
+        const a=Math.PI*2*i/count, d=30+Math.random()*30;
+        p.style.setProperty('--dx',(Math.cos(a)*d)+'px');
+        p.style.setProperty('--dy',(Math.sin(a)*d)+'px');
+        burst.appendChild(p);
+      }
+      trail.appendChild(burst);
+      setTimeout(()=>burst.remove(),1450);
+    };
+    const fwTimer=setInterval(()=>{
+      document.querySelectorAll('.giraffe-one,.giraffe-two').forEach(g=>{
+        const r=g.getBoundingClientRect();
+        makeFirework(r.left+r.width*.5,r.top+r.height*.68);
+      });
+      if(++bursts>30)clearInterval(fwTimer);
+    },210);
+    const trail=document.getElementById('magicTrail');
     let sparks=0;
     const sparkTimer=setInterval(()=>{
       const g1=document.querySelector('.giraffe-one');
@@ -679,7 +855,7 @@ function startFinale(){
       if(++sparks>58)clearInterval(sparkTimer);
     },90);
   },17900);
-  setTimeout(()=>scene.classList.add('soft-ending'),25000);
+  setTimeout(()=>scene.classList.add('soft-ending'),25800);
 }
 
 function go(){if(started)return;started=true;scene.classList.add('started');start.classList.add('hidden');for(let i=0;i<18;i++)setTimeout(()=>flower(false),i*100);normalTimer=setInterval(()=>flower(false),420);setTimeout(()=>scene.classList.add('show-speech'),4200);setTimeout(()=>{scene.classList.add('burst-speech');makeConfetti()},8600);setTimeout(()=>{clearInterval(normalTimer);stormTimer=setInterval(()=>{flower(true);flower(true);if(Math.random()>.45)flower(true)},105)},9800);setTimeout(()=>scene.classList.add('final-joke'),16000);setTimeout(()=>{if(stormTimer)clearInterval(stormTimer);normalTimer=setInterval(()=>flower(false),500)},21500);setTimeout(startFinale,22500)}btn.addEventListener('click',go);window.addEventListener('pagehide',()=>{if(normalTimer)clearInterval(normalTimer);if(stormTimer)clearInterval(stormTimer)})})();
